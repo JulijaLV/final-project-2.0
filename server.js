@@ -11,7 +11,7 @@ app.get("/api/container-info", (req, res) => {
   res.json({
     hostname: os.hostname(),
     platform: os.platform(),
-    architecture: os.architecture(),
+    architecture: os.arch(),
     nodeVersion: process.version,
     uptimeSeconds: Math.floor(process.uptime()),
     serverTime: new Date().toISOString()
