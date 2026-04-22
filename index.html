@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Final Project 2.0</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f4f6f8;
+      color: #222;
+    }
+
+    .card {
+      max-width: 700px;
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    .loading {
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>My Final Project 2.0</h1>
+    <p>Author: Your Name</p>
+
+    <h2>Container Info</h2>
+    <p id="status" class="loading">Loading container data...</p>
+    <ul id="info-list" style="display: none;"></ul>
+  </div>
+
+  <script>
+    async function loadContainerInfo() {
+      const status = document.getElementById("status");
+      const infoList = document.getElementById("info-list");
+
+      try {
+        const response = await fetch("/api/container-info");
+
+        if (!response.ok) {
+          throw new Error("API request failed");
+        }
+
+        const data = await response.json();
+
+        status.style.display = "none";
+        infoList.style.display = "block";
+
+        infoList.innerHTML = `
+          <li><strong>Container hostname:</strong> ${data.hostname}</li>
+          <li><strong>Platform:</strong> ${data.platform}</li>
+          <li><strong>Architecture:</strong> ${data.arch}</li>
+          <li><strong>Node.js version:</strong> ${data.nodeVersion}</li>
+          <li><strong>App uptime (seconds):</strong> ${data.uptimeSeconds}</li>
+          <li><strong>Current server time:</strong> ${data.serverTime}</li>
+        `;
+      } catch (error) {
+        status.textContent = "Failed to load container data.";
+      }
+    }
+
+    loadContainerInfo();
+  </script>
+</body>
+</html>
